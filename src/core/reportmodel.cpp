@@ -8,6 +8,9 @@
 
 #include <QCoreApplication>
 #include <QIcon>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QRegularExpression>
 #include <QtCore/QDebug>
 #include <QtCore/QMetaEnum>
@@ -184,7 +187,7 @@ void ReportModel::addWidgetBase(Band *b, WidgetBase *w)
                                         n),
                             n->childs.count(),
                             n->childs.count());
-//            bands.append(b);
+            widgets.append(w);
             n->addChild(new Node(w));
             endInsertRows();
         }
@@ -271,6 +274,40 @@ QVariant ReportModel::data(const QModelIndex &index, int role) const
     default:
         return QVariant();
     }
+}
+
+void ReportModel::save(QString fileName) const
+{
+    QFile f(fileName);
+    f.open(QIODevice::WriteOnly);
+
+    QJsonObject o;
+    o.insert("connections", save(connections));
+    o.insert("dataTables", save(dataTables));
+    o.insert("bands", save(bands));
+    o.insert("params", save(parameteres));
+    o.insert("widgets", save(widgets));
+
+    QJsonDocument doc;
+    doc.setObject(o);
+
+    f.write(doc.toJson());
+    f.close();
+}
+
+void ReportModel::load(QString fileName)
+{
+    QFile f(fileName);
+    f.open(QIODevice::WriteOnly);
+
+    QJsonDocument doc = QJsonDocument::fromBinaryData(f.readAll());
+    QJsonObject obj = doc.object();
+
+    load<DataConnection>(connections, obj.value("connections").toArray());
+    load<DataTable>(dataTables, obj.value("dataTables").toArray());
+    load(bands, obj.value("bands").toArray());
+    load(parameteres, obj.value("params").toArray());
+    load(widgets, obj.value("widgets").toArray());
 }
 
 #define NODE_CTOR(TYPE) \
@@ -377,6 +414,33 @@ QString ReportModel::Node::iconPath() const
         return "";
     }
     return "";
+}
+
+template<class T>
+QJsonArray ReportModel::save(QList<T*> list) const
+{
+    QJsonArray arr;
+    foreach (T *t, list)
+        arr.append(t->save());
+
+    return arr;
+}
+
+template<class T>
+int ReportModel::load(QList<T*> &list, QJsonArray array)
+{
+    foreach (QJsonValue v, array) {
+        T *t = new T();
+        list.append(t->load(v.toObject()));
+    }
+
+    return list.count();
+}
+
+template<>
+int ReportModel::load<WidgetBase>(QList<WidgetBase *> &list, QJsonArray array)
+{
+    return 0;
 }
 
 LEAF_END_NAMESPACE

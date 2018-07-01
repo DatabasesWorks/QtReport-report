@@ -64,8 +64,9 @@ class DataTable : public SeriazbleObject
     Q_PROPERTY(QString connectionName READ connectionName WRITE setConnectionName USER true)
     Q_PROPERTY(QString selectCommand READ selectCommand WRITE setSelectCommand USER true)
 
-    public:
-        DataTable(QString connectionName);
+public:
+    DataTable();
+    DataTable(QString connectionName);
 
     void remove(DataField *field);
     void clear();

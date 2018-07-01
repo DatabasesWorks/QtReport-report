@@ -175,6 +175,7 @@ bool Report::load( QString path )
 
     //QDataStream stream( &file );
 
+    d->model->load(path + ".json");
     QDomDocument doc("ReportDocument");
 
     if ( !file.open(QIODevice::ReadWrite) )
@@ -259,6 +260,7 @@ void Report::save(QString path)
     if(path.isEmpty())
         path = d->filePath;
 
+    d->model->save(path + ".json");
     QFile file(path);
     if(file.exists())
         file.remove();

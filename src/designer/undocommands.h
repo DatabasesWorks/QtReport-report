@@ -15,6 +15,7 @@ class Band;
 class Parametere;
 class WidgetBase;
 class Variable;
+class SeriazbleObject;
 class UndoCommand : public QUndoCommand
 {
 
@@ -46,8 +47,21 @@ public:
 
 };
 
+class ObjectPropertyUndoCommand : public UndoCommand
+{
+    SeriazbleObject *_object;
+
+public:
+    ObjectPropertyUndoCommand(SeriazbleObject *o, DocumentDesigner *designer, Report *report);
+
+    SeriazbleObject *object() const;
+    void setObject(SeriazbleObject *object);
+
+    void setOldState();
+};
+
 #define UNDO_COMMAND_DECL(TYPE) \
-class TYPE##UndoCommand : public UndoCommand \
+    class TYPE##UndoCommand : public UndoCommand \
 { \
     TYPE *obj; \
 public: \

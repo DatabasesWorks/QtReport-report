@@ -57,6 +57,12 @@ public:
     virtual void saveDom(QDomElement *dom);
     virtual void loadDom(QDomElement *dom);
 
+    QJsonObject save();
+    void load(QJsonObject obj);
+
+    QJsonValue value(QVariant v) const;
+    QVariant value(QJsonValue &v) const;
+
     void copyTo(SeriazbleObject *other);
 };
 

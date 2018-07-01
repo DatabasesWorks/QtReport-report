@@ -25,6 +25,7 @@
 
 #include <QtXml/QDomElement>
 #include <QtCore/QMetaProperty>
+#include <QJsonObject>
 
 LEAF_BEGIN_NAMESPACE
 
@@ -65,6 +66,48 @@ void SeriazbleObject::loadDom(QDomElement *dom)
     }//for
 
     setObjectName(dom->attribute("objectName"));
+}
+
+QJsonObject SeriazbleObject::save()
+{
+    QJsonObject obj;
+    obj.insert("type", QJsonValue(metaObject()->className()));
+
+    for (int i = 0; i < metaObject()->propertyCount(); i++) {
+        QMetaProperty prop = metaObject()->property(i);
+
+        //if (prop.isUser(this))
+        obj.insert(
+            prop.name(),
+            value(prop.read(this)));
+    }//for
+    return obj;
+}
+
+void SeriazbleObject::load(QJsonObject obj)
+{
+    for (int i = 0; i < metaObject()->propertyCount(); i++) {
+        QMetaProperty prop = metaObject()->property(i);
+
+        if (prop.isUser(this)) {
+            QJsonValue v = obj.value(prop.name());
+            if (v == QJsonValue())
+                continue;
+            prop.write(this, value(v));
+        }//if
+    }//for
+
+    setObjectName(obj.value("objectName").toString());
+}
+
+QJsonValue SeriazbleObject::value(QVariant v) const
+{
+    return QJsonValue::fromVariant(v);
+}
+
+QVariant SeriazbleObject::value(QJsonValue &v) const
+{
+    return v.toVariant();
 }
 
 void SeriazbleObject::copyTo(SeriazbleObject *other)

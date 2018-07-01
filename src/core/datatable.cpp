@@ -54,6 +54,11 @@ void DataField::setFilter(QString filter)
     m_filter = filter;
 }
 
+DataTable::DataTable() : SeriazbleObject(), m_connectionName(QString())
+{
+
+}
+
 DataTable::DataTable(QString connectionName) :
     SeriazbleObject(),
     m_connectionName(connectionName)

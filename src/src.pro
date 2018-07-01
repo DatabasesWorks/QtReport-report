@@ -68,7 +68,6 @@ SOURCES +=  \
     propertypages/propertysort.cpp \
     widgets/band.cpp \
     core/reportprintsettings.cpp \
-    core/reportdatamodel.cpp \
     core/reportmodel.cpp \
     designer/seriazbleobject.cpp \
     designer/modeltreeview.cpp \
@@ -132,7 +131,6 @@ HEADERS +=  \
     widgets/widget.h \
     widgets/widgetbase.h \
     core/reportprintsettings.h \
-    core/reportdatamodel.h \
     core/reportmodel.h \
     designer/seriazbleobject.h \
     designer/modeltreeview.h \

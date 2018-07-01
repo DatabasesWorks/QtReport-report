@@ -10,6 +10,7 @@
 #include "parametere.h"
 #include "widgets/widgetbase.h"
 #include "variable.h"
+#include "seriazbleobject.h"
 
 LEAF_BEGIN_NAMESPACE
 
@@ -121,6 +122,27 @@ void UndoCommand::setNewName(QString newName)
 {
     Q_D(UndoCommand);
     d->newName = newName;
+}
+
+ObjectPropertyUndoCommand::ObjectPropertyUndoCommand(SeriazbleObject *o, DocumentDesigner *designer, Report *report)
+    : UndoCommand(designer, report), _object(o)
+{
+
+}
+
+SeriazbleObject *ObjectPropertyUndoCommand::object() const
+{
+    return _object;
+}
+
+void ObjectPropertyUndoCommand::setObject(SeriazbleObject *object)
+{
+    _object = object;
+}
+
+void ObjectPropertyUndoCommand::setOldState()
+{
+//    _object->saveDom();
 }
 
 #define UNDO_COMMAND_IMPL(TYPE) \

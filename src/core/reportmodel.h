@@ -2,6 +2,7 @@
 #define REPORTMODEL_H
 
 #include "qtreportglobal.h"
+#include "widgets/widgetbase.h"
 
 #include <QAbstractItemModel>
 #include <QMetaEnum>
@@ -13,7 +14,7 @@ class DataConnection;
 class DataField;
 class DataTable;
 class Band;
-class WidgetBase;
+//class WidgetBase;
 class Report;
 class Variable;
 class ReportModel : public QAbstractItemModel
@@ -127,6 +128,9 @@ public:
     int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
+    void save(QString fileName) const;
+    void load(QString fileName);
+
 private:
     Report *_report;
     Node *rootItem;
@@ -140,8 +144,18 @@ private:
     QList<DataConnection*> connections;
     QList<DataTable*> dataTables;
     QList<Band*> bands;
+    QList<WidgetBase*> widgets;
 
     static QMetaEnum variablesEnum;
+
+    template<class T>
+    QJsonArray save(QList<T*> list) const;
+
+    template<class T>
+    int load(QList<T*> &list, QJsonArray array);
+
+    template<WidgetBase T>
+    int load<WidgetBase>(QList<WidgetBase*> &list, QJsonArray array);
 };
 
 LEAF_END_NAMESPACE
