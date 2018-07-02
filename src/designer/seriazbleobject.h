@@ -27,6 +27,8 @@
 #include "qtreportglobal.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QJsonArray>
+#include <QtCore/QList>
 
 #define XML_ROOT_TAG            "ReportDocument"
 #define COPY_XML_ROOT           "CopyContent"
@@ -57,13 +59,20 @@ public:
     virtual void saveDom(QDomElement *dom);
     virtual void loadDom(QDomElement *dom);
 
-    QJsonObject save();
-    void load(QJsonObject obj);
+    virtual QJsonObject save();
+    virtual void load(QJsonObject obj);
 
     QJsonValue value(QVariant v) const;
     QVariant value(QJsonValue &v) const;
 
     void copyTo(SeriazbleObject *other);
+
+
+    template<class T>
+    static QJsonArray save(QList<T*> list);
+
+    template<class T>
+    static int load(QList<T*> &list, QJsonArray array);
 };
 
 LEAF_END_NAMESPACE

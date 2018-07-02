@@ -24,6 +24,7 @@
 #include <QtCore/QString>
 
 #include "dataconnection.h"
+#include "datatable.h"
 
 LEAF_BEGIN_NAMESPACE
 
@@ -31,6 +32,14 @@ DataConnection::DataConnection() : SeriazbleObject()
 {
 }
 
+bool DataConnection::add(DataTable *dt)
+{
+    if (_tables.contains(dt))
+        return false;
+    _tables.append(dt);
+    dt->setConnection(this);
+    return true;
+}
 
 QString DataConnection::driver() const
 {

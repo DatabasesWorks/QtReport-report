@@ -73,7 +73,7 @@ class WidgetBase : public SeriazbleObject, public QGraphicsItem
     Q_PROPERTY(QSizeF size WRITE setSize READ size)
     //Q_PROPERTY(Panel *parentBand READ parentBand WRITE setParentBand)
     Q_PROPERTY(QPointF childPos READ childPos WRITE setChildPos)
-    Q_PROPERTY(Band* parentBand READ parentBand WRITE setParentBand NOTIFY parentBandChanged)
+    Q_PROPERTY(Panel* parentBand READ parentBand WRITE setParentBand)
 
 public:
     WidgetBase(QGraphicsItem *parent = 0);

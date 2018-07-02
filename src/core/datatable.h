@@ -68,10 +68,10 @@ public:
     DataTable();
     DataTable(QString connectionName);
 
-    void remove(DataField *field);
-    void clear();
     void append(DataField *field);
     void append(QString fieldName);
+    void remove(DataField *field);
+    void clear();
 
     void appendRecordFields(QSqlRecord *record);
 
@@ -84,6 +84,12 @@ public:
 
     QString selectCommand() const;
 
+    QJsonObject save();
+    void load(QJsonObject obj);
+
+    DataConnection *connection() const;
+    void setConnection(DataConnection *connection);
+
 public slots:
     void setConnectionName(QString connectionName);
 
@@ -91,7 +97,7 @@ public slots:
 
 private:
     QList<DataField*> _fields;
-
+    DataConnection *_connection;
     QString m_connectionName;
     QString m_selectCommand;
 };

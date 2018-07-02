@@ -199,6 +199,54 @@ void ReportModel::removeWidgetBase(WidgetBase *w)
 
 }
 
+DataConnection *ReportModel::connection(QString name) const
+{
+    foreach (DataConnection *i, connections)
+        if (i->objectName() == name)
+            return i;
+    return nullptr;
+}
+
+DataTable *ReportModel::table(QString name) const
+{
+    foreach (DataTable *i, dataTables)
+        if (i->objectName() == name)
+            return i;
+    return nullptr;
+}
+
+Band *ReportModel::band(QString name) const
+{
+    foreach (Band *i, bands)
+        if (i->objectName() == name)
+            return i;
+    return nullptr;
+}
+
+WidgetBase *ReportModel::widget(QString name) const
+{
+    foreach (WidgetBase *i, widgets)
+        if (i->objectName() == name)
+            return i;
+    return nullptr;
+}
+
+Parametere *ReportModel::parametere(QString name) const
+{
+    foreach (Parametere *i, parameteres)
+        if (i->objectName() == name)
+            return i;
+    return nullptr;
+}
+
+Variable *ReportModel::variable(int type) const
+{
+    foreach (Variable *i, globalVariables)
+        if (i->type() == type)
+            return i;
+    return nullptr;
+}
+
 QModelIndex ReportModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (!hasIndex(row, column, parent))
@@ -308,6 +356,14 @@ void ReportModel::load(QString fileName)
     load(bands, obj.value("bands").toArray());
     load(parameteres, obj.value("params").toArray());
     load(widgets, obj.value("widgets").toArray());
+
+    foreach (DataTable *dt, dataTables) {
+        DataConnection *c = connection(dt->connectionName());
+    }
+    foreach (WidgetBase *w, widgets) {
+        Band *b = band(w->property("parentBandName").toString());
+//        DataConnection *c = connection(w->parentBand());
+    }
 }
 
 #define NODE_CTOR(TYPE) \
@@ -431,16 +487,22 @@ int ReportModel::load(QList<T*> &list, QJsonArray array)
 {
     foreach (QJsonValue v, array) {
         T *t = new T();
-        list.append(t->load(v.toObject()));
+        t->load(v.toObject());
+        list.append(t);
     }
 
     return list.count();
 }
 
-template<>
-int ReportModel::load<WidgetBase>(QList<WidgetBase *> &list, QJsonArray array)
+int ReportModel::load(QList<WidgetBase *> &list, QJsonArray array)
 {
-    return 0;
+    foreach (QJsonValue v, array) {
+        WidgetBase *t = WidgetBase::createWidget(v.toString());
+        t->load(v.toObject());
+        widgets.append(t);
+    }
+
+    return list.count();
 }
 
 LEAF_END_NAMESPACE

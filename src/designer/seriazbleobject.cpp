@@ -118,4 +118,27 @@ void SeriazbleObject::copyTo(SeriazbleObject *other)
     }
 }
 
+template<class T>
+QJsonArray SeriazbleObject::save(QList<T *> list)
+{
+    QJsonArray arr;
+    foreach (T *t, list)
+        arr.append(t->save());
+
+    return arr;
+}
+
+template<class T>
+int SeriazbleObject::load(QList<T *> &list, QJsonArray array)
+{
+
+    foreach (QJsonValue v, array) {
+        T *t = new T();
+        t->load(v.toObject());
+        list.append(t);
+    }
+
+    return list.count();
+}
+
 LEAF_END_NAMESPACE

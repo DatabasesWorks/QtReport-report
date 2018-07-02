@@ -22,8 +22,10 @@
  ***************************************************************************/
 
 
+#include "dataconnection.h"
 #include "datatable.h"
 
+#include <QJsonObject>
 #include <QtCore/QDebug>
 #include <QtSql/QSqlRecord>
 #include <QtXml/QDomElement>
@@ -130,6 +132,18 @@ QString DataTable::selectCommand() const
     return m_selectCommand;
 }
 
+QJsonObject DataTable::save()
+{
+    QJsonObject obj = SeriazbleObject::save();
+    obj.insert("fields", SeriazbleObject::save(_fields));
+    return obj;
+}
+
+void DataTable::load(QJsonObject obj)
+{
+    SeriazbleObject::load(obj);
+}
+
 void DataTable::setConnectionName(QString connectionName)
 {
     m_connectionName = connectionName;
@@ -138,6 +152,17 @@ void DataTable::setConnectionName(QString connectionName)
 void DataTable::setSelectCommand(QString selectCommand)
 {
     m_selectCommand = selectCommand;
+}
+
+DataConnection *DataTable::connection() const
+{
+    return _connection;
+}
+
+void DataTable::setConnection(DataConnection *connection)
+{
+    _connection->add(this);
+    _connection = connection;
 }
 
 LEAF_END_NAMESPACE

@@ -101,6 +101,7 @@ public:
     };
 
 public:
+    // member add/remove
     void addParametere(Parametere *p);
     void removeParametere(Parametere *p);
 
@@ -122,6 +123,15 @@ public:
     void addWidgetBase(Band *b, WidgetBase *w);
     void removeWidgetBase(WidgetBase *w);
 
+    //member find
+    DataConnection *connection(QString name) const;
+    DataTable *table(QString name) const;
+    Band *band(QString name) const;
+    WidgetBase *widget(QString name) const;
+    Parametere *parametere(QString name) const;
+    Variable *variable(int type) const;
+
+    // QAbstractListModel interface
     QModelIndex index(int row, int column, const QModelIndex &parent) const Q_DECL_OVERRIDE;
     QModelIndex parent(const QModelIndex &child) const Q_DECL_OVERRIDE;
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
@@ -154,8 +164,7 @@ private:
     template<class T>
     int load(QList<T*> &list, QJsonArray array);
 
-    template<WidgetBase T>
-    int load<WidgetBase>(QList<WidgetBase*> &list, QJsonArray array);
+    int load(QList<WidgetBase*> &list, QJsonArray array);
 };
 
 LEAF_END_NAMESPACE

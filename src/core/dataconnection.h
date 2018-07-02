@@ -30,6 +30,7 @@ class QString;
 
 LEAF_BEGIN_NAMESPACE
 
+class DataTable;
 class DataConnection : public SeriazbleObject
 {
     Q_OBJECT
@@ -42,6 +43,8 @@ class DataConnection : public SeriazbleObject
 
 public:
     DataConnection();
+
+    bool add(DataTable *dt);
 
     QString driver() const;
     QString databaseName() const;
@@ -62,7 +65,7 @@ public:
 private:
     QString _name;
     QString _driver, _databaseName, _serverName, _username, _password;
-
+    QList<DataTable*> _tables;
 };
 
 LEAF_END_NAMESPACE
