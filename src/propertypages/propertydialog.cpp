@@ -109,9 +109,7 @@ void PropertyDialog::initTabs()
 
 void PropertyDialog::addTab(PropertyPageBase *page)
 {
-   tabWidget->addTab( page, page->title() );
-
-   page->load();
+   tabWidget->addTab(page, page->title());
 }
 
 

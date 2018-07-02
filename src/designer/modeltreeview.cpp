@@ -1,5 +1,6 @@
 #include "modeltreeview.h"
 #include "report.h"
+#include "documentdesigner.h"
 
 #include <QtWidgets/QMenu>
 #include <QtCore/QDebug>
@@ -12,63 +13,63 @@
 
 LEAF_BEGIN_NAMESPACE
 
-Leaf::ModelTreeView::ModelTreeView(QWidget *parent) : QTreeView(parent)
+ModelTreeView::ModelTreeView(QWidget *parent) : QTreeView(parent)
 {
-    setHeaderHidden(true);
-    setEnableDrag(true);
-
-    menu = new QMenu(this);
-
-    QAction *actionNewConnection = new QAction(tr("New"), this);
-    actionNewConnection->setObjectName("actionNewConnection");
-    actionNewConnection->setIcon(QIcon(":/designer/add"));
-
-    QAction *actionEditConnection= new QAction(tr("Edit"), this);
-    actionEditConnection->setObjectName("actionEditConnection");
-    actionEditConnection->setIcon(QIcon(":/designer/edit"));
-
-    QAction *actionDeleteConnection= new QAction(tr("Delete"), this);
-    actionDeleteConnection->setObjectName("actionDeleteConnection");
-    actionDeleteConnection->setIcon(QIcon(":/designer/delete"));
-
-    menu->addAction(actionNewConnection);
-    menu->addAction(actionEditConnection);
-    menu->addAction(actionDeleteConnection);
+    setupUi();
 }
 
 ModelTreeView::ModelTreeView(Report *report, QWidget *parent)
     : QTreeView(parent), _report(report)
 {
     setModel(_report->model());
-    setHeaderHidden(true);
-
-    menu = new QMenu(this);
-
-    QAction *actionNewConnection = new QAction(tr("New"), this);
-    actionNewConnection->setObjectName("actionNewConnection");
-    actionNewConnection->setIcon(QIcon(":/designer/add"));
-
-    QAction *actionEditConnection= new QAction(tr("Edit"), this);
-    actionEditConnection->setObjectName("actionEditConnection");
-    actionEditConnection->setIcon(QIcon(":/designer/edit"));
-
-    QAction *actionDeleteConnection= new QAction(tr("Delete"), this);
-    actionDeleteConnection->setObjectName("actionDeleteConnection");
-    actionDeleteConnection->setIcon(QIcon(":/designer/delete"));
-
-    menu->addAction(actionNewConnection);
-    menu->addAction(actionEditConnection);
-    menu->addAction(actionDeleteConnection);
+    setupUi();
 }
 
+ModelTreeView::ModelTreeView(Report *report, DocumentDesigner *designer, QWidget *parent)
+    : QTreeView(parent), _report(report), _designer(designer)
+{
+    setModel(_report->model());
+    setupUi();
+}
 void ModelTreeView::mousePressEvent(QMouseEvent *event)
 {
     QTreeView::mousePressEvent(event);
     qApp->processEvents();
 
-    if (event->button() == Qt::RightButton)
-        menu->exec(event->globalPos());
-    else if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::RightButton) {
+        ReportModel::NodeType type = ReportModel::NodeType(
+                    currentIndex().data(ReportModel::TypeRole).toInt());
+        _selectedType = int(type);
+        bool showMenu = true;
+
+        switch (type) {
+        case ReportModel::DataConnectionsRoot:
+        case ReportModel::ParameteresRoot:
+        case ReportModel::WidgetsRoot:
+            actionNew->setVisible(true);
+            actionEdit->setVisible(false);
+            break;
+
+        case ReportModel::DataConnectionItem:
+        case ReportModel::DataTableItem:
+        case ReportModel::ParametereItem:
+            actionEdit->setVisible(true);
+            actionNew->setVisible(false);
+            break;
+
+        case ReportModel::BandItem:
+        case ReportModel::WidgetBaseItem:
+            actionNew->setVisible(false);
+            actionEdit->setVisible(false);
+            break;
+
+        default:
+            showMenu = false;
+        }
+
+        if (showMenu)
+            menu->exec(event->globalPos());
+    } else if (event->button() == Qt::LeftButton) {
         ReportModel::NodeType type = ReportModel::NodeType(
                     currentIndex().data(ReportModel::TypeRole).toInt());
 
@@ -88,11 +89,73 @@ void ModelTreeView::mousePressEvent(QMouseEvent *event)
     }
 }
 
+void ModelTreeView::setupUi()
+{
+    setHeaderHidden(true);
+
+    menu = new QMenu(this);
+
+    actionNew = new QAction(tr("New"), this);
+    actionNew->setObjectName("actionNewConnection");
+    actionNew->setIcon(QIcon(":/designer/add"));
+
+    actionEdit= new QAction(tr("Edit"), this);
+    actionEdit->setObjectName("actionEditConnection");
+    actionEdit->setIcon(QIcon(":/designer/edit"));
+
+    actionDelete= new QAction(tr("Delete"), this);
+    actionDelete->setObjectName("actionDeleteConnection");
+    actionDelete->setIcon(QIcon(":/designer/delete"));
+
+    QAction *actionExpandAll = new QAction(tr("Expand all"), this);
+    actionExpandAll->setObjectName("actionExpandAll");
+    actionExpandAll->setIcon(QIcon(":/designer/expand"));
+
+    QAction *actionCollapseAll = new QAction(tr("Collapse all"), this);
+    actionCollapseAll->setObjectName("actionCollapseAll");
+    actionCollapseAll->setIcon(QIcon(":/designer/collapse"));
+
+    menu->addAction(actionNew);
+    menu->addAction(actionEdit);
+    menu->addAction(actionDelete);
+    menu->addSeparator();
+    menu->addAction(actionExpandAll);
+    menu->addAction(actionCollapseAll);
+
+    connect(actionNew, &QAction::triggered, this, &ModelTreeView::on_actionNew_triggered);
+    connect(actionEdit, &QAction::triggered, this, &ModelTreeView::on_actionEdit_triggered);
+    connect(actionDelete, &QAction::triggered, this, &ModelTreeView::on_actionDelete_triggered);
+    connect(actionExpandAll, &QAction::triggered, this, &QTreeView::expandAll);
+    connect(actionCollapseAll, &QAction::triggered, this, &QTreeView::collapseAll);
+}
+
 void ModelTreeView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
     if (!current.isValid())
         return;
+}
+
+void ModelTreeView::on_actionNew_triggered()
+{
+    switch (ReportModel::NodeType(_selectedType)) {
+    case ReportModel::DataConnectionsRoot:
+        _designer->addDataConnection();
+        break;
+    case ReportModel::ParameteresRoot:
+        _designer->addParametere();
+        break;
+    }
+}
+
+void ModelTreeView::on_actionEdit_triggered()
+{
+
+}
+
+void ModelTreeView::on_actionDelete_triggered()
+{
+
 }
 
 

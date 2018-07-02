@@ -123,6 +123,8 @@ public:
     void addWidgetBase(Band *b, WidgetBase *w);
     void removeWidgetBase(WidgetBase *w);
 
+    void clear();
+
     //member find
     DataConnection *connection(QString name) const;
     DataTable *table(QString name) const;

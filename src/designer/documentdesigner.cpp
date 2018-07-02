@@ -2210,7 +2210,7 @@ void DocumentDesigner::showWidgetProperties()
     if (hasWidgetClassInfo("prop_image"))  propertyPages.append(new PropertyPageImage());
 
     if(d->resizer->selectedWidgets().count() == 1
-            && d->resizer->selectedWidgets().at(0)->inherits("Band")){
+            && d->resizer->selectedWidgets().at(0)->inherits("Leaf::Band")){
         PropertyBand *p = new PropertyBand();
         p->setBand(d->activeBand);
         propertyPages.append(p);
@@ -2227,13 +2227,17 @@ void DocumentDesigner::showWidgetProperties()
     if (dialog->exec() == QDialog::Accepted) {
         UndoCommand *cmd = new UndoCommand(this, d->report);
 
-        cmd->setText(tr("Widget(s) property changed"));
-        if(selectedWidgets().count() == 1)
+        if(selectedWidgets().count() == 1) {
             cmd->setOldName(d->activeWidget->objectName());
+            cmd->setText(tr("Widget property changed"));
+        } else {
+            cmd->setText(tr("Widgets property changed"));
+        }
         cmd->setOldState(getSelectedWidgetXML());
 
         foreach(PropertyPageBase  *page, propertyPages){
             page->save();
+            page->deleteLater();
         }//foreach
 
         if(selectedWidgets().count() == 1)

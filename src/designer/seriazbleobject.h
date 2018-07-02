@@ -68,11 +68,27 @@ public:
     void copyTo(SeriazbleObject *other);
 
 
-    template<class T>
-    static QJsonArray save(QList<T*> list);
+    template<typename T>
+    static QJsonArray save(const QList<T*> &list)
+    {
+        QJsonArray arr;
+        foreach (T *t, list)
+            arr.append(t->save());
+
+        return arr;
+    }
 
     template<class T>
-    static int load(QList<T*> &list, QJsonArray array);
+    static int load(QList<T*> &list, QJsonArray array)
+    {
+        foreach (QJsonValue v, array) {
+            T *t = new T();
+            t->load(v.toObject());
+            list.append(t);
+        }
+
+        return list.count();
+    }
 };
 
 LEAF_END_NAMESPACE

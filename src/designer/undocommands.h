@@ -16,6 +16,7 @@ class Parametere;
 class WidgetBase;
 class Variable;
 class SeriazbleObject;
+class WidgetAttributes;
 class UndoCommand : public QUndoCommand
 {
 
@@ -45,6 +46,23 @@ public:
     void setOldName(QString oldName);
     void setNewName(QString newName);
 
+};
+
+class WidgetPropertyUndoCommand : public UndoCommand
+{
+    QList<WidgetBase*> _widgets;
+    WidgetAttributes *_old;
+    WidgetAttributes *_new;
+
+    struct AttributeChange
+    {
+        QString name;
+        QVariant oldValue;
+        QVariant newValue;
+    };
+    QList<AttributeChange*> changes;
+    void setOld(QString name, QVariant v);
+    void setNew(QString name, QVariant v);
 };
 
 class ObjectPropertyUndoCommand : public UndoCommand

@@ -164,5 +164,30 @@ UNDO_COMMAND_IMPL(Parametere)
 UNDO_COMMAND_IMPL(WidgetBase)
 UNDO_COMMAND_IMPL(Variable)
 
+void WidgetPropertyUndoCommand::setOld(QString name, QVariant v)
+{
+    for (int i = 0; i < changes.count(); ++i)
+        if (changes.at(i)->name == name) {
+            changes[i]->oldValue = v;
+            return;
+        }
+    AttributeChange *a = new AttributeChange;
+    a->name = name;
+    a->oldValue = v;
+    changes.append(a);
+}
+
+void WidgetPropertyUndoCommand::setNew(QString name, QVariant v)
+{
+    for (int i = 0; i < changes.count(); ++i)
+        if (changes.at(i)->name == name) {
+            changes[i]->newValue = v;
+            return;
+        }
+    AttributeChange *a = new AttributeChange;
+    a->name = name;
+    a->newValue = v;
+    changes.append(a);
+}
 
 LEAF_END_NAMESPACE

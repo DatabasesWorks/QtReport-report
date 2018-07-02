@@ -21,9 +21,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
-#include "dataconnection.h"
 #include "datatable.h"
+#include "dataconnection.h"
 
 #include <QJsonObject>
 #include <QtCore/QDebug>
@@ -31,6 +30,11 @@
 #include <QtXml/QDomElement>
 
 LEAF_BEGIN_NAMESPACE
+
+DataField::DataField()
+{
+
+}
 
 DataField::DataField(QString name) {
     setObjectName(name);
@@ -135,13 +139,14 @@ QString DataTable::selectCommand() const
 QJsonObject DataTable::save()
 {
     QJsonObject obj = SeriazbleObject::save();
-    obj.insert("fields", SeriazbleObject::save(_fields));
+    obj.insert("fields", SeriazbleObject::save<DataField>(_fields));
     return obj;
 }
 
 void DataTable::load(QJsonObject obj)
 {
     SeriazbleObject::load(obj);
+    SeriazbleObject::load<DataField>(_fields, obj.value("fields").toArray());
 }
 
 void DataTable::setConnectionName(QString connectionName)

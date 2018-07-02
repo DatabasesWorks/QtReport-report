@@ -47,6 +47,7 @@ class DataField : public SeriazbleObject
     QString m_filter;
 
 public:
+    DataField();
     DataField(QString name);
 
     int type() const;

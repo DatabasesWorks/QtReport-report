@@ -817,7 +817,7 @@ void DesignerFactory::initDockWidgets()
     auto modelItemsDock = new QDockWidget(mainWindow);
     modelItemsDock->setObjectName("modelItemsDock");
     modelItemsDock->setWindowTitle("Report model");
-    auto treeViewModel = new ModelTreeView(_report, mainWindow);
+    auto treeViewModel = new ModelTreeView(_report, _designer, mainWindow);
     modelItemsDock->setWidget(treeViewModel);
     mainWindow->addDockWidget(Qt::RightDockWidgetArea, modelItemsDock);
 

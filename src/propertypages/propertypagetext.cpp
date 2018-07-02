@@ -57,6 +57,7 @@ void PropertyPageText::load()
     f->setFilterKeyColumn(0);
     f->setFilterRegExp("3|4|5|6");
     treeView->setModel(f);
+    treeView->setDragEnabled(true);
     textEdit->setPlainText(_designer->widgetProperty("text").toString());
 }
 

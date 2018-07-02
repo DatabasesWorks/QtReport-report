@@ -199,6 +199,14 @@ void ReportModel::removeWidgetBase(WidgetBase *w)
 
 }
 
+void ReportModel::clear()
+{
+    connections.clear();
+    dataTables.clear();
+    widgets.clear();
+    parameteres.clear();
+}
+
 DataConnection *ReportModel::connection(QString name) const
 {
     foreach (DataConnection *i, connections)
