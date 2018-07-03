@@ -5,6 +5,8 @@ CONFIG += staticlib
 QT += sql xml
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
+include($$PWD/../3rdparty/zint/backend_qt4/backend_vc8.pro)
+
 TRANSLATIONS = ../translations/qtreport_en.ts \
                ../translations/qtreport_fa.ts
 

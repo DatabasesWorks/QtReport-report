@@ -1,7 +1,7 @@
 /***************************************************************************
  *   QtReport                                                              *
  *   Qt Report Builder Soultion                                            *
- *                                                                         * 
+ *                                                                         *
  *   Copyright (C) 2010 by Hamed Masafi                                    *
  *   Hamed.Masafi@GMail.COM                                                *
  *                                                                         *
@@ -34,78 +34,78 @@ LEAF_BEGIN_NAMESPACE
 QColorPicker::QColorPicker(QWidget *parent, bool toolbarMode) :
     QPushButton( parent ), _toolbarMode(toolbarMode)
 {
-   popup = new QColorPickerPopup( this );
-   popup->setVisible(false);
-   popup->setObjectName( QString::fromUtf8("popup") );
-   popup->setFrameShape(QFrame::StyledPanel);
-   popup->setFrameShadow(QFrame::Plain);
+    popup = new QColorPickerPopup( this );
+    popup->setVisible(false);
+    popup->setObjectName( QString::fromUtf8("popup") );
+    popup->setFrameShape(QFrame::StyledPanel);
+    popup->setFrameShadow(QFrame::Plain);
 
-   setText("Automatic");
+    setText("Automatic");
 
-//   setMinimumWidth( _toolbarMode ? 35 : 100 );
-   _selectedColor = Qt::black;
+    //   setMinimumWidth( _toolbarMode ? 35 : 100 );
+    _selectedColor = Qt::black;
 
-   QPixmap icon( 10, 10 );
-   QPainter iconPainter( &icon );
-   iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
-   this->setIcon( icon );
+    QPixmap icon( 10, 10 );
+    QPainter iconPainter( &icon );
+    iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
+    this->setIcon( icon );
 
-   QMetaObject::connectSlotsByName( this );
+    QMetaObject::connectSlotsByName( this );
 }
 
 
 void QColorPicker::paintEvent ( QPaintEvent * )
 {
-   QStyleOptionButton option;
-   option.initFrom( this );
+    QStyleOptionButton option;
+    option.initFrom( this );
 
-   option.features = QStyleOptionButton::HasMenu;
+    option.features = QStyleOptionButton::HasMenu;
 
-   option.text = _selectedColor.name();// text();
-   QPixmap icon( 10, 10 );
-   QPainter iconPainter( &icon );
-   iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
-   this->setIcon( icon );
-   option.icon = icon;//();
+    option.text = _selectedColor.name();// text();
+    QPixmap icon( 10, 10 );
+    QPainter iconPainter( &icon );
+    iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
+    this->setIcon( icon );
+    option.icon = icon;//();
 
-   QPainter painter ( this );
+    QPainter painter ( this );
 
-   style()->drawControl( QStyle::CE_PushButton, &option, &painter, this );
+    style()->drawControl( QStyle::CE_PushButton, &option, &painter, this );
 }
 
 
 void QColorPicker::mouseReleaseEvent ( QMouseEvent * )
 {
-   popup->move(  this->mapToGlobal( QPoint(0, this->height()) ) );
-   popup->setWindowFlags( Qt::Popup );
-   popup->show();
+    popup->move(  this->mapToGlobal( QPoint(0, this->height()) ) );
+    popup->setWindowFlags( Qt::Popup );
+    popup->show();
 }
 
 void QColorPicker::setColor( QColor c )
 {
-   _selectedColor = c;
-   setText(c.name());
-   update();
+    _selectedColor = c;
+    setText(c.name());
+    update();
 }
 QColor QColorPicker::color() const
 {
-   return _selectedColor;
+    return _selectedColor;
 }
 
 void QColorPicker::on_popup_selected( QColor color )
 {
-   if(color==QColor())
-      setText(tr("Automatic"));
-   else
-      setText(color.name().toUpper());
+    if(color==QColor())
+        setText(tr("Automatic"));
+    else
+        setText(color.name().toUpper());
 
-   QPixmap icon( 10, 10 );
-   QPainter iconPainter( &icon );
-   iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
-   setIcon(icon);
+    QPixmap icon( 10, 10 );
+    QPainter iconPainter( &icon );
+    iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
+    setIcon(icon);
 
-   _selectedColor = color;
-   update();
+    _selectedColor = color;
+    update();
 }
 
 
@@ -115,24 +115,24 @@ void QColorPicker::on_popup_selected( QColor color )
 QColorPickerTool::QColorPickerTool(QWidget *parent) :
     QToolButton( parent )
 {
-   popup = new QColorPickerPopup( this );
-   popup->setVisible(false);
-   popup->setObjectName( QString::fromUtf8("popup") );
-   popup->setFrameShape(QFrame::StyledPanel);
-   popup->setFrameShadow(QFrame::Plain);
+    popup = new QColorPickerPopup( this );
+    popup->setVisible(false);
+    popup->setObjectName( QString::fromUtf8("popup") );
+    popup->setFrameShape(QFrame::StyledPanel);
+    popup->setFrameShadow(QFrame::Plain);
 
-   //setMinimumWidth( 350 );
-   _selectedColor = Qt::black;
-   this->setToolButtonStyle( Qt::ToolButtonIconOnly );
-   QPixmap icon( 10, 10 );
-   QPainter iconPainter( &icon );
-   iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
-   this->setIcon( icon );
-this->setArrowType( Qt::DownArrow );
-this->setCheckable( false );
-this->setToolButtonStyle( Qt::ToolButtonFollowStyle );
+    //setMinimumWidth( 350 );
+    _selectedColor = Qt::black;
+    this->setToolButtonStyle( Qt::ToolButtonIconOnly );
+    QPixmap icon( 10, 10 );
+    QPainter iconPainter( &icon );
+    iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
+    this->setIcon( icon );
+    this->setArrowType( Qt::DownArrow );
+    this->setCheckable( false );
+    this->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
-   QMetaObject::connectSlotsByName( this );
+    QMetaObject::connectSlotsByName( this );
 }
 
 
@@ -140,42 +140,46 @@ this->setToolButtonStyle( Qt::ToolButtonFollowStyle );
 void QColorPickerTool::paintEvent ( QPaintEvent * )
 {
 
-   QStyleOptionToolButton option;
-   option.initFrom( this );
+    QStyleOptionToolButton option;
+    option.initFrom( this );
 
-   option.features = QStyleOptionToolButton::HasMenu;
-   //option.state = this->style()->stat
+    option.features = QStyleOptionToolButton::HasMenu;
+    //option.state = this->style()->stat
 
-   QPixmap icon( 10, 10 );
-   QPainter iconPainter( &icon );
-   iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
-   //option.icon = icon;
+    QPixmap icon( 10, 10 );
+    QPainter iconPainter( &icon );
+    iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
+    option.icon = QIcon(icon);
 
-   QPainter painter ( this );
-   //option.text = "COLOR";
-   option.text = text();
-   //painter.fillRect( 0, 0, 10, 10, _selectedColor );
-   //painter.setPen( _selectedColor );
-   //painter.drawText( 0 ,20, "A" );
-   //this->setIcon( icon );
+    QPainter painter ( this );
+    //option.text = "COLOR";
+    option.text = text();
+    //painter.fillRect( 0, 0, 10, 10, _selectedColor );
+    //painter.setPen( _selectedColor );
+    //painter.drawText( 0 ,20, "A" );
+    //this->setIcon( icon );
 
-   style()->drawComplexControl( QStyle::CC_ToolButton, &option, &painter, this );
+    //   style()->drawComplexControl(QStyle::CC_ToolButton, &option, &painter, this );
 
 }
 
 
 void QColorPickerTool::mouseReleaseEvent ( QMouseEvent * )
 {
-   popup->move(  this->mapToGlobal( QPoint(0, this->height()) ) );
-   popup->setWindowFlags( Qt::Popup );
-   popup->show();
+    popup->move(  this->mapToGlobal( QPoint(0, this->height()) ) );
+    popup->setWindowFlags( Qt::Popup );
+    popup->show();
 }
 
 
 void QColorPickerTool::on_popup_selected( QColor color )
 {
-   _selectedColor = color;
-   repaint();
+    _selectedColor = color;
+    QPixmap icon( 10, 10 );
+    QPainter iconPainter( &icon );
+    iconPainter.fillRect( 0, 0, 10, 10, _selectedColor );
+    setIcon(QIcon(icon));
+    repaint();
 }
 
 LEAF_END_NAMESPACE
