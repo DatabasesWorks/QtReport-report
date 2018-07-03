@@ -170,7 +170,7 @@ void Band::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawText(headerRect,
                       header(),
                       Qt::AlignLeft | Qt::AlignVCenter);
-
+    painter->setBrush(QBrush());
 }
 
 QString Band::typeString() const
@@ -289,6 +289,7 @@ void Band::addWidget(WidgetBase *widget, QPointF pt)
     if (!_childs.contains(widget))
         _childs.append(widget);
 
+    widget->setParentBand(this);
     QPointF tmpPos = pt;
     tmpPos.setY(pt.y() + _headerHeight);
     widget->setPos(this->mapToScene(tmpPos));

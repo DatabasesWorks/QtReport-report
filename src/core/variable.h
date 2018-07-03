@@ -15,6 +15,9 @@ class Variable : public SeriazbleObject
 public:
 
     enum Type {
+        PageNumber,
+        TotalPages,
+
         PrintDate,
         PrintYear,
         PrintMonth,

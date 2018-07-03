@@ -32,6 +32,7 @@
 #include <QSqlQuery>
 #include <QPrinter>
 #include <QPrintPreviewDialog>
+#include <QStyleOptionGraphicsItem>
 
 #include "dataconnection.h"
 #include "widgets/widgetbase.h"
@@ -470,6 +471,12 @@ QList<DataTable*> Report::dataTables()
 void Report::addDataTable(DataTable *table)
 {
     Q_D(Report);
+
+    if (!d->connections.contains(table->connection())) {
+        qWarning("This DataTable doesn't belong to this report");
+        return;
+    }
+
     d->tables.append(table);
     d->model->addDataTable(table);
 }
@@ -591,21 +598,50 @@ void Report::setDataSource(QString dataTableName, QSqlQuery &query)
 
 void Report::print()
 {
-    QPrinter printer(QPrinter::HighResolution); //create your QPrinter (don't need to be high resolution, anyway)
+    Q_D(Report);
+    QPrinter printer(QPrinter::PrinterResolution); //create your QPrinter (don't need to be high resolution, anyway)
     printer.setPageSize(QPrinter::A4);
     printer.setOrientation(QPrinter::Portrait);
     printer.setPageMargins (15,15,15,15,QPrinter::Millimeter);
-    printer.setFullPage(false);
+    printer.setFullPage(true);
     printer.setOutputFileName("output.pdf");
     printer.setOutputFormat(QPrinter::PdfFormat); //you can use native format of system usin QPrinter::NativeFormat
-
-    QPainter painter(&printer); // create a painter which will paint 'on printer'.
-    painter.setFont(QFont("Tahoma",8));
-    painter.drawText(200,200,"Test");
-    painter.end();
-
     QPrintPreviewDialog dialog(&printer);
+
+    connect(&dialog, &QPrintPreviewDialog::paintRequested,
+            this, static_cast<void (Report::*)(QPrinter*)>(&Report::print));
+
     dialog.exec();
+}
+
+void Report::print(QPrinter *printer)
+{
+    Q_D(Report);
+    printer->newPage();
+    QPainter p(printer); // create a painter which will paint 'on printer'.
+    QStyleOptionGraphicsItem option = QStyleOptionGraphicsItem();
+    int t = 0;
+    foreach (Band *b, d->bands) {
+        int repeatTime = 14;
+        for (int i = 0; i < repeatTime; ++i) {
+            if (t + b->height() > printer->height()) {
+                t = 0;
+                printer->newPage();
+                p.setTransform(QTransform());
+            }
+            //        b->paint(&p, &option, nullptr);
+
+            foreach (WidgetBase *w, *b->childs()) {
+                QTransform transform;
+                transform.translate(w->childPos().x(), w->childPos().y() + t);
+                p.setTransform(transform);
+                w->paint(&p, &option, nullptr);
+            }
+            t += b->height();
+        }
+    }
+
+    p.end();
 }
 
 PrintSettings *Report::printSetting() const

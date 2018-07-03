@@ -245,6 +245,11 @@ void DesignerFactory::initActions()
     actionInsertRectangle->setIcon(QIcon(":/designer/rectangle"));
     actionInsertRectangle->setData("Rectangle");
 
+    actionInsertBarcode = new QAction(this);
+    actionInsertBarcode->setObjectName(QString::fromUtf8("actionInsertBarcode"));
+    actionInsertBarcode->setIcon(QIcon(":/designer/barcode"));
+    actionInsertBarcode->setData("Barcode");
+
     actionAlignToGridOption = new QAction(this);
     actionAlignToGridOption->setObjectName(QString::fromUtf8("actionAlignToGridOption"));
     actionAlignToGridOption->setCheckable(true);
@@ -512,6 +517,7 @@ void DesignerFactory::initActions()
     connect(actionInsertVerticalLine,   SIGNAL(triggered()), this, SLOT(actionInsertWidget_triggered()));
     connect(actionInsertHorizontalLine, SIGNAL(triggered()), this, SLOT(actionInsertWidget_triggered()));
     connect(actionInsertRectangle,      SIGNAL(triggered()), this, SLOT(actionInsertWidget_triggered()));
+    connect(actionInsertBarcode,        SIGNAL(triggered()), this, SLOT(actionInsertWidget_triggered()));
 
     connect(actionInsertReportHeader, SIGNAL(triggered()), this, SLOT(actionInsertBand_triggered()));
     connect(actionInsertPageHeader,   SIGNAL(triggered()), this, SLOT(actionInsertBand_triggered()));
@@ -606,6 +612,7 @@ void DesignerFactory::initMenubar()
     menuInsert->addAction(actionInsertVerticalLine);
     menuInsert->addAction(actionInsertHorizontalLine);
     menuInsert->addAction(actionInsertRectangle);
+    menuInsert->addAction(actionInsertBarcode);
     menuInsert->addSeparator();
     menuInsert->addAction(actionInsertReportHeader);
     menuInsert->addAction(actionInsertPageHeader);
@@ -725,6 +732,7 @@ void DesignerFactory::initToolbars()
     toolBarToolbox->addAction(actionInsertVerticalLine);
     toolBarToolbox->addAction(actionInsertHorizontalLine);
     toolBarToolbox->addAction(actionInsertRectangle);
+    toolBarToolbox->addAction(actionInsertBarcode);
     toolBarToolbox->addSeparator();
     toolBarToolbox->addAction(actionInsertReportHeader);
     toolBarToolbox->addAction(actionInsertPageHeader);
@@ -922,6 +930,7 @@ void DesignerFactory::retranslateUi()
     actionInsertReportFooter->setText(tr("Report footer"));
     actionInsertPageFooter->setText(tr("Page footer"));
     actionInsertRectangle->setText(tr("Rectangle"));
+    actionInsertBarcode->setText(tr("Barcode"));
     actionAlignToGridOption->setText(tr("Align to grid"));
     actionAlignToGrid->setText(tr("Adjust size by grid"));
     actionShowRulers->setText(tr("Rulers"));

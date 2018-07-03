@@ -12,7 +12,7 @@ class Panel : public Rectangle
 public:
     explicit Panel(QGraphicsItem *parent = 0);
 
-    QList<WidgetBase*>   *childs();
+    QList<WidgetBase *> *childs();
 
 public slots:
     void reorderChilds();

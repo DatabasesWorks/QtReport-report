@@ -35,6 +35,7 @@ class QSizeF;
 class QSizeF;
 class QVariant;
 class QString;
+class QPrinter;
 
 LEAF_BEGIN_NAMESPACE
 
@@ -121,10 +122,13 @@ public:
 
     void setDataSource(QString dataTableName, QSqlQuery &query);
 
-    void print();
 
     PrintSettings *printSetting() const;
     void setPrintSetting(PrintSettings *printSetting);
+
+public slots:
+    void print();
+    void print(QPrinter *printer);
 
 private:
     ReportPrivate *d_ptr;

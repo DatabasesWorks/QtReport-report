@@ -21,23 +21,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QMouseEvent>
-#include <QGraphicsSceneDragDropEvent>
-#include <QMetaProperty>
-#include <QDebug>
-#include <QDomElement>
+#include <QtCore/QMetaProperty>
+#include <QtCore/QDebug>
+#include <QtGui/QMouseEvent>
+#include <QtWidgets/QGraphicsSceneDragDropEvent>
+#include <QtXml/QDomElement>
 
 #include "event.h"
 #include "widgetbase.h"
 #include "band.h"
-
 #include "textbox.h"
 #include "image.h"
 #include "horizontalline.h"
 #include "verticalline.h"
 #include "rectanglebase.h"
 #include "event.h"
-
+#include "barcode.h"
 
 LEAF_BEGIN_NAMESPACE
 
@@ -490,8 +489,9 @@ WidgetBase *WidgetBase::createWidget(QString type)
     if (type == "VerticalLine")    return new VerticalLine();
     if (type == "Rectangle")       return new Rectangle();
     if (type == "LineBase")        return new Rectangle();
+    if (type == "Barcode")         return new Barcode();
 
-    return 0;
+    return nullptr;
 }
 
 WidgetBase *WidgetBase::createWidget(QDomElement *dom)
@@ -500,7 +500,7 @@ WidgetBase *WidgetBase::createWidget(QDomElement *dom)
     QString type = dom->attribute("type", "");
 
     if(type.isEmpty())
-        return 0;
+        return nullptr;
 
     if(widget = createWidget(type))
       widget->loadDom(dom);

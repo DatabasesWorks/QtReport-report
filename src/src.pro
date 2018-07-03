@@ -71,7 +71,8 @@ SOURCES +=  \
     core/reportmodel.cpp \
     designer/seriazbleobject.cpp \
     designer/modeltreeview.cpp \
-    core/variable.cpp
+    core/variable.cpp \
+    widgets/barcode.cpp
 
 HEADERS +=  \
     designer/colorpicker.h \
@@ -134,7 +135,8 @@ HEADERS +=  \
     core/reportmodel.h \
     designer/seriazbleobject.h \
     designer/modeltreeview.h \
-    core/variable.h
+    core/variable.h \
+    widgets/barcode.h
 
 FORMS += \
     designer/databaseinfodialog.ui \

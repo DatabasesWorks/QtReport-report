@@ -939,7 +939,7 @@ void DocumentDesigner::addContent(QString widgetType)
     d->pasteMargin = widget->marginPos();
     d->readyToPaste = true;
     d->pasteInRect = true;
-    delete widget;
+    widget->deleteLater();
 }
 
 /**

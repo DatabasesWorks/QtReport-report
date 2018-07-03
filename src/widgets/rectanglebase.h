@@ -48,7 +48,7 @@ class Rectangle : public WidgetBase
     QColor m_fillColor;
 
 public:
-    Rectangle ( QGraphicsItem *parent = 0 );
+    Rectangle (QGraphicsItem *parent = nullptr);
     ~Rectangle();
 
     void paint ( QPainter *painter,

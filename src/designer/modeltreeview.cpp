@@ -51,6 +51,11 @@ void ModelTreeView::mousePressEvent(QMouseEvent *event)
             break;
 
         case ReportModel::DataConnectionItem:
+            actionEdit->setVisible(true);
+            actionNew->setVisible(true);
+            actionDelete->setVisible(true);
+            break;
+
         case ReportModel::DataTableItem:
         case ReportModel::ParametereItem:
             actionEdit->setVisible(true);
@@ -142,6 +147,9 @@ void ModelTreeView::on_actionNew_triggered()
     case ReportModel::DataConnectionsRoot:
         _designer->addDataConnection();
         break;
+    case ReportModel::DataConnectionItem:
+        _designer->addDataTable(currentIndex().data(ReportModel::TextRole).toString());
+        break;
     case ReportModel::ParameteresRoot:
         _designer->addParametere();
         break;
@@ -150,7 +158,11 @@ void ModelTreeView::on_actionNew_triggered()
 
 void ModelTreeView::on_actionEdit_triggered()
 {
-
+    switch (ReportModel::NodeType(_selectedType)) {
+    case ReportModel::DataTableItem:
+        _designer->editDataTable(currentIndex().data(ReportModel::TextRole).toString());
+        break;
+    }
 }
 
 void ModelTreeView::on_actionDelete_triggered()

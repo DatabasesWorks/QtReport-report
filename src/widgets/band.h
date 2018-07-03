@@ -21,8 +21,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef QSECTIONBAND_H
-#define QSECTIONBAND_H
+#ifndef BAND_H
+#define BAND_H
 
 #include "qtreportglobal.h"
 #include "panel.h"
@@ -90,9 +90,8 @@ private :
     BandType      _bandType;
     QPointF        _childPos;
     int        _index;
-
 };
 
 LEAF_END_NAMESPACE
 
-#endif
+#endif // BAND_H

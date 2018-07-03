@@ -103,6 +103,7 @@ private:
    QAction *actionInsertReportFooter;
    QAction *actionInsertPageFooter;
    QAction *actionInsertRectangle;
+   QAction *actionInsertBarcode;
    QAction *actionAlignToGridOption;
    QAction *actionAlignToGrid;
    QAction *actionShowRulers;
