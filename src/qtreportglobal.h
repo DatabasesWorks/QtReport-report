@@ -35,10 +35,12 @@
 #endif
 
 #ifdef LEAF_NAMESPACE
+#   define LEAF_NAMESPACE_STR QT_STRINGIFY(LEAF_NAMESPACE)
 #   define LEAF_BEGIN_NAMESPACE     namespace LEAF_NAMESPACE{
 #   define LEAF_END_NAMESPACE       }
 #   define LEAF_WRAP_NAMESPACE(x)   LEAF_NAMESPACE::x
 #else
+#   define LEAF_NAMESPACE_STR
 #   define LEAF_BEGIN_NAMESPACE
 #   define LEAF_END_NAMESPACE
 #   define LEAF_WRAP_NAMESPACE(x)   x

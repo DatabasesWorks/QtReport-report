@@ -1,15 +1,46 @@
-#include "propertypages/propertypagebarcode.h"
 #include "propertypagebarcode.h"
 
-//TODO:
+#include <QMetaEnum>
+
+#include <widgets/barcode.h>
+
+LEAF_BEGIN_NAMESPACE
+
 PropertyPageBarcode::PropertyPageBarcode(QWidget *parent) :
-    QWidget(parent)//,
-//    ui(new Ui::LReportPropertyPageBarcode)
+    PropertyPageBase(parent)
 {
-//    ui->setupUi(this);
+    setupUi(this);
+    _title = tr("Barcode");
+
+    QMetaEnum e = QMetaEnum::fromType<Barcode::BarcodeType>();
+    for (int i = 0; i < e.keyCount(); ++i) {
+        comboBoxBarcodeType->addItem(e.key(i), e.value(i));
+    }
 }
 
-PropertyPageBarcode::~PropertyPageBarcode()
+void PropertyPageBarcode::changeEvent(QEvent *e)
 {
-//    delete ui;
+    QWidget::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        retranslateUi(this);
+        break;
+    default:
+        break;
+    }
 }
+
+void PropertyPageBarcode::load()
+{
+    int type = _designer->widgetProperty("barcodeType").toInt();
+    comboBoxBarcodeType->setCurrentIndex(comboBoxBarcodeType->findData(type));
+    spinBox->setValue(_designer->widgetProperty("whitespace").toInt());
+}
+
+void PropertyPageBarcode::save()
+{
+    _designer->setWidgetProperty("barcodeType", comboBoxBarcodeType->currentData().toInt());
+    _designer->setWidgetProperty("whitespace", spinBox->value());
+}
+
+LEAF_END_NAMESPACE

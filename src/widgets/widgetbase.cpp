@@ -483,6 +483,9 @@ bool WidgetBase::hasClassInfo(QString infoName)
 
 WidgetBase *WidgetBase::createWidget(QString type)
 {
+    if (type.startsWith(LEAF_NAMESPACE_STR))
+        type = type.replace(LEAF_NAMESPACE_STR "::", "");
+
     if (type == "TextBox")         return new TextBox();
     if (type == "Image")           return new Image();
     if (type == "HorizontalLine")  return new HorizontalLine();
@@ -504,6 +507,9 @@ WidgetBase *WidgetBase::createWidget(QDomElement *dom)
 
     if(widget = createWidget(type))
       widget->loadDom(dom);
+
+    if (widget == nullptr)
+        qDebug() << "Unable to create " + type + " widget";
 
     return widget;
 }

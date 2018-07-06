@@ -1,22 +1,27 @@
-#ifndef QREPORTPROPERTYPAGEBARCODE_H
-#define QREPORTPROPERTYPAGEBARCODE_H
+#ifndef PROPERTYPAGEBARCODE_H
+#define PROPERTYPAGEBARCODE_H
 
-#include <QWidget>
+#include "propertypages/propertypagebase.h"
+#include "ui_propertypagebarcode.h"
 
-namespace Ui {
-    class PropertyPageBarcode;
-}
+LEAF_BEGIN_NAMESPACE
 
-class PropertyPageBarcode : public QWidget
+class PropertyPageBarcode : public PropertyPageBase, private Ui::PropertyPageBarcode
 {
     Q_OBJECT
 
 public:
     explicit PropertyPageBarcode(QWidget *parent = 0);
-    ~PropertyPageBarcode();
 
-private:
-    Ui::PropertyPageBarcode *ui;
+protected:
+    void changeEvent(QEvent *e);
+
+    // PropertyPageBase interface
+public:
+    void load() Q_DECL_OVERRIDE;
+    void save() Q_DECL_OVERRIDE;
 };
 
-#endif // QREPORTPROPERTYPAGEBARCODE_H
+LEAF_END_NAMESPACE
+
+#endif // PROPERTYPAGEBARCODE_H

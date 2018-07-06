@@ -12,6 +12,9 @@ win32{
 }
 unix{
     LIBS +=  ../../src/libQtReport.a
+    LIBS +=  ../../3rdparty/zint/backend_qt/libQtZint.a
+    LIBS += -lpng
+    DEFINES += QZINT_LIBRARY
     TARGETDEPS += ../../src/libQtReport.a
 }
 

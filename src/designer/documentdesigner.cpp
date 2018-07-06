@@ -48,6 +48,7 @@
 #include <QDomDocument>
 #include <QMessageBox>
 #include <qmath.h>
+#include <propertypagebarcode.h>
 
 #include "dataconnection.h"
 #include "parametere.h"
@@ -2013,7 +2014,8 @@ void DocumentDesigner::setWidgetProperty(QString propertyName, QVariant property
     QList<WidgetBase*>  widgets = selectedWidgets();
 
     foreach(WidgetBase  *widget, widgets)
-        widget->setPropertyValue(propertyName, propertyValue);
+        widget->setProperty(propertyName.toLocal8Bit().data(), propertyValue);
+//        widget->setPropertyValue(propertyName, propertyValue);
 
 }
 
@@ -2031,9 +2033,9 @@ QVariant DocumentDesigner::widgetProperty(QString name) const
 
     if (!widgets.count()) return QVariant();
 
-    ret = widgets.at(0)->propertyValue(name);
+    ret = widgets.at(0)->property(name.toLocal8Bit().data());
     foreach(WidgetBase  *widget, widgets)
-        if (widget->propertyValue(name) != ret)
+        if (widget->property(name.toLocal8Bit().data()) != ret)
             return QVariant();
 
     return ret;
@@ -2208,6 +2210,7 @@ void DocumentDesigner::showWidgetProperties()
     if (hasWidgetClassInfo("prop_rect"))   propertyPages.append(new PropertyPageRectangle());
     if (hasWidgetClassInfo("prop_line"))   propertyPages.append(new PropertyPageLineType());
     if (hasWidgetClassInfo("prop_image"))  propertyPages.append(new PropertyPageImage());
+    if (hasWidgetClassInfo("prop_barcode"))  propertyPages.append(new PropertyPageBarcode());
 
     if(d->resizer->selectedWidgets().count() == 1
             && d->resizer->selectedWidgets().at(0)->inherits("Leaf::Band")){

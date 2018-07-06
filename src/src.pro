@@ -5,7 +5,15 @@ CONFIG += staticlib
 QT += sql xml
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-include($$PWD/../3rdparty/zint/backend_qt4/backend_vc8.pro)
+!contains(CONFIG,zint){
+    message(zint)
+    ZINT_PATH=$$PWD/../3rdparty/zint/
+    INCLUDEPATH += $$ZINT_PATH/backend $$ZINT_PATH/backend_qt
+    DEPENDPATH += $$ZINT_PATH/backend $$ZINT_PATH/backend_qt
+    LIBS += -lpng
+    DEFINES += QZINT_LIBRARY
+    LIBS += -L$${DEST_LIBS} -lQtZint
+}
 
 TRANSLATIONS = ../translations/qtreport_en.ts \
                ../translations/qtreport_fa.ts
@@ -74,7 +82,8 @@ SOURCES +=  \
     designer/seriazbleobject.cpp \
     designer/modeltreeview.cpp \
     core/variable.cpp \
-    widgets/barcode.cpp
+    widgets/barcode.cpp \
+    propertypages/propertypagebarcode.cpp
 
 HEADERS +=  \
     designer/colorpicker.h \
@@ -138,7 +147,8 @@ HEADERS +=  \
     designer/seriazbleobject.h \
     designer/modeltreeview.h \
     core/variable.h \
-    widgets/barcode.h
+    widgets/barcode.h \
+    propertypages/propertypagebarcode.h
 
 FORMS += \
     designer/databaseinfodialog.ui \
@@ -164,7 +174,9 @@ FORMS += \
     propertypages/sectiondataproperties.ui \
     propertypages/sectionsproperties.ui \
     designer/querybuilderdialog.ui \
-    propertypages/propertypagetext.ui
+    propertypages/propertypagetext.ui \
+    propertypages/propertybarcode.ui \
+    propertypages/propertypagebarcode.ui
 
 OTHER_FILES += \
     main.dox
