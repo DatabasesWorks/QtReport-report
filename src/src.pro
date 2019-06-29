@@ -5,7 +5,7 @@ CONFIG += staticlib
 QT += sql xml
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-!contains(CONFIG,zint){
+contains(CONFIG,zint){
     message(zint)
     ZINT_PATH=$$PWD/../3rdparty/zint/
     INCLUDEPATH += $$ZINT_PATH/backend $$ZINT_PATH/backend_qt
@@ -32,6 +32,9 @@ SOURCES +=  \
     designer/designerfactory.cpp \
     designer/designerwindow.cpp \
     designer/documentdesigner.cpp \
+    models/abstractmodel.cpp \
+    models/sqlquerymodel.cpp \
+    models/variantmapmodel.cpp \
     widgets/displaybase.cpp \
     designer/docpage.cpp \
     designer/documentview.cpp \
@@ -83,7 +86,8 @@ SOURCES +=  \
     designer/modeltreeview.cpp \
     core/variable.cpp \
     widgets/barcode.cpp \
-    propertypages/propertypagebarcode.cpp
+    propertypages/propertypagebarcode.cpp \
+    core/modelfilterproxy.cpp
 
 HEADERS +=  \
     designer/colorpicker.h \
@@ -96,6 +100,9 @@ HEADERS +=  \
     designer/designerfactory.h \
     designer/designerwindow.h \
     designer/documentdesigner.h \
+    models/abstractmodel.h \
+    models/sqlquerymodel.h \
+    models/variantmapmodel.h \
     widgets/displaybase.h \
     designer/docpage.h \
     designer/documentview.h \
@@ -148,7 +155,8 @@ HEADERS +=  \
     designer/modeltreeview.h \
     core/variable.h \
     widgets/barcode.h \
-    propertypages/propertypagebarcode.h
+    propertypages/propertypagebarcode.h \
+    core/modelfilterproxy.h
 
 FORMS += \
     designer/databaseinfodialog.ui \

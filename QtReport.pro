@@ -7,5 +7,5 @@ CONFIG += warn_on \
           thread 
 
 #contains(CONFIG, zint){
-    SUBDIRS += 3rdparty/zint/backend_qt
+#    SUBDIRS += 3rdparty/zint/backend_qt
 #}

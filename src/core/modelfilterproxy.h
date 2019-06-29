@@ -1,7 +1,7 @@
 /***************************************************************************
  *   QtReport                                                              *
  *   Qt Report Builder Soultion                                            *
- *                                                                         * 
+ *                                                                         *
  *   Copyright (C) 2010 by Hamed Masafi                                    *
  *   Hamed.Masafi@GMail.COM                                                *
  *                                                                         *
@@ -21,52 +21,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef MODELFILTERPROXY_H
+#define MODELFILTERPROXY_H
+
+#include "qtreportglobal.h"
 #include <QSortFilterProxyModel>
-#include "designer/documentdesigner.h"
-#include "propertypages/propertypagetext.h"
-#include "widgets/textbox.h"
-#include "report.h"
-#include "reportmodel.h"
-#include "modelfilterproxy.h"
 
 LEAF_BEGIN_NAMESPACE
 
-PropertyPageText::PropertyPageText(QWidget *parent) :
-    PropertyPageBase(parent)
+class ReportModel;
+class ModelFilterProxy : public QSortFilterProxyModel
 {
-    setupUi(this);
-    _title = tr( "Text" );
-}
+    Q_OBJECT
 
-void PropertyPageText::changeEvent(QEvent *e)
-{
-    QWidget::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        retranslateUi(this);
-        break;
-    default:
-        break;
-    }
-}
+    Q_PROPERTY(bool showConnections READ showConnections WRITE setShowConnections NOTIFY showConnectionsChanged)
+    Q_PROPERTY(bool showWidgets READ showWidgets WRITE setShowWidgets NOTIFY showWidgetsChanged)
+    Q_PROPERTY(bool showParameteres READ showParameteres WRITE setShowParameteres NOTIFY showParameteresChanged)
+    Q_PROPERTY(bool showVariables READ showVariables WRITE setShowVariables NOTIFY showVariablesChanged)
 
-void PropertyPageText::load()
-{
-    ModelFilterProxy *proxy = new ModelFilterProxy(_designer->report()->model());
-    proxy->setShowWidgets(false);
-    /*QSortFilterProxyModel *f = new QSortFilterProxyModel(this);//
-    f->setSourceModel(_designer->report()->model());
-    f->setFilterRole(ReportModel::TypeRole);
-    f->setFilterKeyColumn(0);
-    f->setFilterRegExp("3|4|5|6");*/
-    treeView->setModel(proxy);
-    treeView->setDragEnabled(true);
-    textEdit->setPlainText(_designer->widgetProperty("text").toString());
-}
+    bool m_showConnections;
+    bool m_showWidgets;
+    bool m_showParameteres;
+    bool m_showVariables;
 
-void PropertyPageText::save()
-{
-   _designer->setWidgetProperty("text", textEdit->toPlainText());
-}
+    void resetFilter();
+
+public:
+    ModelFilterProxy(ReportModel *model, QObject *parent = nullptr);
+    bool showConnections() const;
+    bool showWidgets() const;
+    bool showParameteres() const;
+    bool showVariables() const;
+
+public slots:
+    void setShowConnections(bool showConnections);
+    void setShowWidgets(bool showWidgets);
+    void setShowParameteres(bool showParameteres);
+    void setShowVariables(bool showVariables);
+
+signals:
+    void showConnectionsChanged(bool showConnections);
+    void showWidgetsChanged(bool showWidgets);
+    void showParameteresChanged(bool showParameteres);
+    void showVariablesChanged(bool showVariables);
+
+    // QSortFilterProxyModel interface
+protected:
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const Q_DECL_OVERRIDE;
+};
 
 LEAF_END_NAMESPACE
+
+#endif // MODELFILTERPROXY_H
