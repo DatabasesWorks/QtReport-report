@@ -957,7 +957,7 @@ WidgetBase *DocumentDesigner::reportWidget(QString name)
     foreach(WidgetBase *w, widgets)
         if(w->objectName() == name)
             return w;
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -1930,7 +1930,7 @@ void DocumentDesigner::loadReport()
     for (int i = 0; i < d->report->bands()->count(); i++) {
         addBand(d->report->bands()->at(i), false);
 
-        QList<WidgetBase*> list = *d->report->bands()->at(i)->childs();
+        QList<WidgetBase*> list = d->report->bands()->at(i)->childs();
         for (int j = 0; j < list.count(); j++) {
             addReportWidget(list.at(j),
                             0, 0, false);

@@ -61,9 +61,7 @@
 #include "colorpicker.h"
 #include "parameteredialog.h"
 #include "propertypages/sectionsproperties.h"
-#include "treemanager.h"
 #include "documentdesigner.h"
-#include "treemanager.h"
 #include "modeltreeview.h"
 
 LEAF_BEGIN_NAMESPACE
@@ -675,7 +673,6 @@ void DesignerFactory::initMenubar()
     menuFormat->addAction(actionProperties);
 
     //Report
-    menuReport->addMenu(treeWidgetFields->createContextMenu());
     menuReport->addSeparator();
     menuReport->addAction(actionSectionsProperties);
     menuReport->addSeparator();
@@ -685,10 +682,7 @@ void DesignerFactory::initMenubar()
     menuReport->addAction(actionAddParametere);
 
     // View
-    QList<QAction*> menuToolbars = mainWindow->createPopupMenu()->actions();
-
-    for (int i =  0; i < menuToolbars.count(); i ++)
-        menuView->addAction(menuToolbars[i]);
+    menuView->addActions(mainWindow->createPopupMenu()->actions());
 
     menuView->addSeparator();
     menuView->addAction(menuZoom->menuAction());
@@ -811,16 +805,6 @@ void DesignerFactory::initToolbars()
 
 void DesignerFactory::initDockWidgets()
 {
-    // Report items
-    reportItemsDock = new QDockWidget(mainWindow);
-    reportItemsDock->setObjectName("reportItemsDock");
-    reportItemsDock->setWindowTitle("Report items");
-    treeWidgetFields = new TreeManager(mainWindow, _designer, _report);
-    treeWidgetFields->setObjectName("treeWidgetFields");
-
-    reportItemsDock->setWidget(treeWidgetFields);
-    mainWindow->addDockWidget(Qt::RightDockWidgetArea, reportItemsDock);
-
     //Report model
     auto modelItemsDock = new QDockWidget(mainWindow);
     modelItemsDock->setObjectName("modelItemsDock");
@@ -1258,8 +1242,8 @@ void DesignerFactory::doc_activeWidgetChanged()
 
 void DesignerFactory::doc_dataDirectoryModified()
 {
-    qDebug() << "doc_dataDirectoryModified";
-    treeWidgetFields->initTreeItems();
+//    qDebug() << "doc_dataDirectoryModified";
+//    treeWidgetFields->initTreeItems();
 }
 
 void DesignerFactory::on_actionSave_As_triggered()
@@ -1283,7 +1267,7 @@ void DesignerFactory::on_actionOpen_triggered()
     _designer->clear();
     _report->load(filePath);
     _designer->loadReport();
-    treeWidgetFields->initTreeItems();
+//    treeWidgetFields->initTreeItems();
 }
 
 void DesignerFactory::on_actionProperties_triggered()

@@ -28,6 +28,8 @@ QVariant Variable::value() const
     case PrintHour:       return QTime::currentTime().hour();
     case PrintMinute:     return QTime::currentTime().minute();
     case PrintSecond:     return QTime::currentTime().second();
+    default:
+        break;
     }
 
     return QVariant();

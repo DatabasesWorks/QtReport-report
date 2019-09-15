@@ -16,9 +16,24 @@ void Panel::reorderChilds()
     }//foreach
 }
 
-QList<WidgetBase*> *Panel::childs()
+QList<WidgetBase*> Panel::childs()
 {
-    return &_childs;
+    return _childs;
+}
+
+WidgetBase *Panel::child(int n)
+{
+    return _childs.at(n);
+}
+
+void Panel::appendChild(WidgetBase *child)
+{
+    _childs.append(child);
+}
+
+void Panel::removeChild(WidgetBase *child)
+{
+    _childs.removeOne(child);
 }
 
 LEAF_END_NAMESPACE

@@ -28,6 +28,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
 #include <QtCore/QList>
 
 #define XML_ROOT_TAG            "ReportDocument"
@@ -54,7 +55,7 @@ class SeriazbleObject : public QObject
 
 public:
 
-    SeriazbleObject(QObject *parent = 0);
+    SeriazbleObject(QObject *parent = nullptr);
 
     virtual void saveDom(QDomElement *dom);
     virtual void loadDom(QDomElement *dom);

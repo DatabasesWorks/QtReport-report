@@ -46,7 +46,7 @@ TextBox::TextBox(QGraphicsItem *parent) :
 
     setForeColor(Qt::black);
     setFont(QFont());
-    setText(QString::null);
+    setText(QString());
 }
 
 
@@ -61,8 +61,8 @@ void TextBox::paint(QPainter *painter,
 {
     Rectangle::paint(painter, option, widget);
 
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
 
     QTextOption textOption;
     textOption.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);

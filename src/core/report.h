@@ -23,15 +23,16 @@
 #ifndef QREPORT_H
 #define QREPORT_H
 
+#include <QExplicitlySharedDataPointer>
 #include <QObject>
 #include <QSqlQuery>
 
 #include "qtreportglobal.h"
 #include "datatable.h"
+#include "reportdata.h"
 
 template <typename T> class QList;
 template <class Key, class T> class QHash;
-class QSizeF;
 class QSizeF;
 class QVariant;
 class QString;
@@ -46,6 +47,7 @@ class WidgetBase;
 class Band;
 class DataConnection;
 class PrintSettings;
+class AbstractModel;
 class LEAF_EXPORT Report : public QObject
 {
     Q_OBJECT
@@ -54,6 +56,7 @@ class LEAF_EXPORT Report : public QObject
 
 public:
 
+    //TODO: remove that
     enum XmlNodeType{
         WidgetType      = 1,
         BandType        = 2,
@@ -120,7 +123,7 @@ public:
     void addConnection(DataConnection *conn);
     void removeConnection(DataConnection *conn);
 
-    void setDataSource(QString dataTableName, QSqlQuery &query);
+    void setDataSource(const QString &dataTableName, AbstractModel *model);
 
 
     PrintSettings *printSetting() const;
@@ -131,8 +134,7 @@ public slots:
     void print(QPrinter *printer);
 
 private:
-    ReportPrivate *d_ptr;
-    Q_DECLARE_PRIVATE(Report)
+    QExplicitlySharedDataPointer<ReportPrivate> d;
 
     PrintSettings *_printSetting;
 
@@ -141,6 +143,7 @@ signals:
 
     friend class DocumentDesigner;
     friend class ReportModel;
+    friend class ReportPrinter;
 };
 
 LEAF_END_NAMESPACE

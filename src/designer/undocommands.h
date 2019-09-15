@@ -3,6 +3,7 @@
 
 #include "qtreportglobal.h"
 #include <QUndoCommand>
+#include <QVariant>
 
 LEAF_BEGIN_NAMESPACE
 

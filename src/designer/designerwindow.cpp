@@ -53,7 +53,7 @@ DesignerWindow::DesignerWindow ( QWidget *parent )
     init_resources();
 
     factory = new DesignerFactory( this );
-    QSettings set( "QtReport2" );
+    QSettings set( "QtReport" );
 
     this->setWindowIcon(QIcon(":/designer/qtreport_32"));
     this->restoreState( set.value( "MainWindowState" ).toByteArray() );
@@ -63,7 +63,7 @@ DesignerWindow::DesignerWindow ( QWidget *parent )
 
 DesignerWindow::~DesignerWindow ()
 {
-    QSettings set( "QtReport2" );
+    QSettings set( "QtReport" );
     set.setValue( "MainWindowState", this->saveState() );
 }
 

@@ -15,6 +15,7 @@ protected:
     void setIndex(int index);
 public:
     AbstractModel();
+    virtual ~AbstractModel() = default;
 
     virtual int count() = 0;
     virtual QVariant data(const QString &key) const = 0;

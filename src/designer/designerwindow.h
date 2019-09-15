@@ -39,7 +39,7 @@ class DesignerWindow : public QMainWindow//, private Ui::DesignerWindow
     Q_OBJECT
 
 public:
-    DesignerWindow(QWidget *parent = 0);
+    DesignerWindow(QWidget *parent = nullptr);
     ~DesignerWindow();
 
 private:

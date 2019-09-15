@@ -24,6 +24,7 @@ INCLUDEPATH += \
     $$PWD/propertypages
 
 SOURCES +=  \
+    core/reportprinter.cpp \
     designer/databaseinfodialog.cpp \
     designer/databasetablesdialog.cpp \
     core/datatable.cpp \
@@ -60,7 +61,6 @@ SOURCES +=  \
     core/report.cpp \
     designer/ruler.cpp \
     designer/scene.cpp \
-    designer/treemanager.cpp \
     typehelper.cpp \
     designer/undocommands.cpp \
     designer/widgetresizer.cpp \
@@ -90,6 +90,8 @@ SOURCES +=  \
     core/modelfilterproxy.cpp
 
 HEADERS +=  \
+    core/reportdata.h \
+    core/reportprinter.h \
     designer/colorpicker.h \
     designer/databaseinfodialog.h \
     designer/databasetablesdialog.h \
@@ -135,7 +137,6 @@ HEADERS +=  \
     core/report.h \
     designer/ruler.h \
     designer/scene.h \
-    designer/treemanager.h \
     typehelper.h \
     designer/undocommands.h \
     designer/widgetresizer_p.h \

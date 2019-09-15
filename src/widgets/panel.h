@@ -10,15 +10,19 @@ class Panel : public Rectangle
     Q_OBJECT
 
 public:
-    explicit Panel(QGraphicsItem *parent = 0);
+    explicit Panel(QGraphicsItem *parent = nullptr);
 
-    QList<WidgetBase *> *childs();
+    QList<WidgetBase*> childs();
 
+    void appendChild(WidgetBase *child);
+    void removeChild(WidgetBase *child);
+
+    WidgetBase *child(int n);
 public slots:
     void reorderChilds();
 
 protected:
-    QList<WidgetBase*>   _childs;
+    QList<WidgetBase*> _childs;
 
 };
 

@@ -1,0 +1,11 @@
+#include "report.h"
+#include "reportprinter.h"
+
+LEAF_BEGIN_NAMESPACE
+
+ReportPrinter::ReportPrinter(Report *report) : d(report->d)
+{
+
+}
+
+LEAF_END_NAMESPACE

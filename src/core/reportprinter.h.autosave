@@ -1,0 +1,22 @@
+#ifndef REPORTPRINTER_H
+#define REPORTPRINTER_H
+
+#include "qtreportglobal.h"
+#include "reportdata.h"
+#include <QExplicitlySharedDataPointer>
+
+LEAF_BEGIN_NAMESPACE
+
+class Report;
+class ReportPrinter
+{
+public:
+    ReportPrinter(Report *report);
+
+private:
+    QExplicitlySharedDataPointer<ReportPrivate> d;
+};
+
+LEAF_END_NAMESPACE
+
+#endif // REPORTPRINTER_H
