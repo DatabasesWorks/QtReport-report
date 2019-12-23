@@ -5,6 +5,7 @@ Reporting tool and module for Qt
 
 Original Repository: 
 https://gitlab.com/hamed.masafi/QtReport
+
 https://github.com/HamedMasafi/QtReport
 
 
